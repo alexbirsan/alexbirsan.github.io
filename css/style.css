@@ -526,8 +526,10 @@ ul {
     }
   }
 
-  .portfolio__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .portfolio {
+    .portfolio__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .footer {
@@ -548,11 +550,15 @@ ul {
 }
 
 @media (max-width: 480px) {
-  .portfolio__grid {
-    grid-template-columns: 1fr;
+  .portfolio {
+    .portfolio__grid {
+      grid-template-columns: 1fr;
+    }
   }
 
-  .hero__name {
-    font-size: 2.4rem;
+  .hero {
+    .hero__name {
+      font-size: 2.4rem;
+    }
   }
 }

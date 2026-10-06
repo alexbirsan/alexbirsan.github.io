@@ -1,0 +1,11 @@
+#!/bin/sh
+# Stamp the css/js links in index.html with a short hash of the staged file
+# contents, so browsers refetch them only when a file actually changed.
+set -e
+
+for file in css/style.css js/script.js; do
+  hash=$(git rev-parse --short=8 ":$file")
+  sed -i "s|$file?v=[^\"]*|$file?v=$hash|" index.html
+done
+
+git add index.html

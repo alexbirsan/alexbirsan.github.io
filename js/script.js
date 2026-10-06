@@ -72,21 +72,33 @@ filterLinks.forEach((link) => {
 });
 
 // Active nav link highlight based on scroll position
-const sections = document.querySelectorAll('section[id], header[id]');
-const navAnchors = document.querySelectorAll('.navbar__links a');
+const navbar = document.querySelector('.navbar');
 
-const sectionObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        navAnchors.forEach((a) => {
-          a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
-        });
-      }
-    });
-  },
-  { threshold: 0.5 }
-);
+const updateNavbar = () => {
+  navbar.classList.toggle('is-scrolled', window.scrollY > 10);
+};
 
-sections.forEach((section) => sectionObserver.observe(section));
+window.addEventListener('scroll', updateNavbar, { passive: true });
+updateNavbar();
+
+const navAnchors = document.querySelectorAll('.navbar__links a[href^="#"]');
+
+const updateActiveLink = () => {
+  let active = navAnchors[0];
+
+  // set active
+  navAnchors.forEach((a) => {
+    const section = document.querySelector(a.getAttribute('href'));
+    if (section.getBoundingClientRect().top <= 1) active = a;
+  });
+
+  // The footer is too short to reach the top, so activate it at the page bottom
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    active = navAnchors[navAnchors.length - 1];
+  }
+
+  navAnchors.forEach((a) => a.classList.toggle('active', a === active));
+};
+
+window.addEventListener('scroll', updateActiveLink, { passive: true });
+updateActiveLink();
